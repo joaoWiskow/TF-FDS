@@ -7,7 +7,7 @@ public class ServicoImpostoRS implements IServicoImposto{
         this.orcamento = orcamento;
     }
 
-    public double calculaImpostoSP(double valor)
+    public double calculaImpostoSP()
     {
         
         this.valor = valor * 0.12;

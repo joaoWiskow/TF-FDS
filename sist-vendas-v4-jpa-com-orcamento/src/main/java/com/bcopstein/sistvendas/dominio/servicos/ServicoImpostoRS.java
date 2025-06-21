@@ -7,7 +7,7 @@ public class ServicoImpostoRS implements IServicoImposto{
         this.orcamento = orcamento;
     }
 
-    public double calculaImpostoRS(double valor)
+    public double calculaImpostoRS()
     {
         double tmp = orcamento.getCustoItens();
         if(tmp > 100.0)
