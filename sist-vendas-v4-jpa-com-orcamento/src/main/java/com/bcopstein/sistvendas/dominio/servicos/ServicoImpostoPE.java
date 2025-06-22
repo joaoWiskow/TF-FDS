@@ -1,0 +1,34 @@
+import com.bcopstein.sistvendas.persistencia.Orcamento;
+
+public class ServicoImpostoRS implements IServicoImposto{
+    double valor;
+    Orcamento orcamento;
+    List<Itens> orcPE;
+
+    public ServicoImpostoRS(double valor, Orcamento orcamento)
+    {
+        this.valor = valor;
+        this.orcamento = orcamento;
+        orcPE = orcamento.getItens();
+    }
+
+    public double calculaImpostoPE()
+    {
+        for(Item i : orcPE)
+        {
+            if( i.getProduto().getDescricao().contains("*") )
+            {
+                this.valor += i.getProduto().getPrecoUnitario() * i.getQuantidade() * 0.05;
+            }
+            else{
+                this.valor += i.getProduto().getPrecoUnitario() * i.getQuantidade() * 0.15;
+            }
+        }
+    }
+
+    public double getImpostoPE()
+    {
+        return valor;
+    };
+
+}
