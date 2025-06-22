@@ -59,6 +59,17 @@ public class Controller {
     @GetMapping("efetivaOrcamento/{id}")
     @CrossOrigin(origins = "*")
     public OrcamentoDTO efetivaOrcamento(@PathVariable(value="id") long idOrcamento){
+        
+        /*  if(dateAtual - dataOrcamento){
+                if( estado.equals(RS) || estado.equals(PE) || estado.equals(SP) ){
+                    impostoFederal
+                    impostoEstadual
+                    desconto5
+                    desconto10
+                }
+            }       
+        */
+
         return efetivaOrcamento.run(idOrcamento);
     }
 
