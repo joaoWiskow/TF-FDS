@@ -18,6 +18,8 @@ import com.bcopstein.sistvendas.aplicacao.dtos.ItemPedidoDTO;
 import com.bcopstein.sistvendas.aplicacao.dtos.OrcamentoDTO;
 import com.bcopstein.sistvendas.aplicacao.dtos.ProdutoDTO;
 import com.bcopstein.sistvendas.dominio.modelos.OrcamentoModel;
+import com.bcopstein.sistvendas.dominio.servicos.ServicoDescontoDe10;
+import com.bcopstein.sistvendas.dominio.servicos.ServicoDescontoDe5;
 
 
 @RestController
@@ -60,15 +62,66 @@ public class Controller {
     @CrossOrigin(origins = "*")
     public OrcamentoDTO efetivaOrcamento(@PathVariable(value="id") long idOrcamento){
         
-        /*  if(dateAtual - dataOrcamento){
-                if( estado.equals(RS) || estado.equals(PE) || estado.equals(SP) ){
-                    impostoFederal
-                    impostoEstadual
-                    desconto5
-                    desconto10
-                }
-            }       
-        */
+        String estado = "";
+        String pais = "";
+        int erro = 0;  
+        if( (dateAtual - dataOrcamento) > 21 )
+        {
+            switch ( estado )
+            {
+                case RS:
+                ServicoImpostoRS impostoRS = new ServicoImpostoRS(orcamento.getCustoItens() , orcamento);
+                impostoRS.calculaImpostoRS();
+                orcamento.setImposto( impostoRS.getImpostoRS() );
+                break;
+
+                case SP:
+                ServicoImpostoSP impostoSP = new ServicoImpostoSP(orcamento.getCustoItens() , orcamento);
+                impostoSP.calculaImpostoSP();
+                orcamento.setImposto( impostoSP.getImpostoSP() );
+                break;
+
+                case PE:
+                ServicoImpostoPE impostoPE = new ServicoImpostoPE(orcamento.getCustoItens() , orcamento);
+                impostoPE.calculaImpostoPE();
+                orcamento.setImposto( impostoPE.getImpostoPE() );
+                break;
+
+                default:
+                System.out.println("Erro");
+                erro++;
+                break;
+            }
+            switch ( pais )
+            {
+                case BR:
+                ServicoImpostoFederal impostoBR = new ServicoImpostoFederal(orcamento.getCustoItens(), orcamento);
+                impostoBR.calculaImpostoFederal();
+                double impTemp = orcamento.getImposto();
+                impTemp = impTemp + impostoBR.getImpostoFederal();
+                orcamento.setImposto( impTemp );
+
+                default:
+                System.out.println("Erro");
+                erro++;
+                break;
+            }
+            if(erro = 0)
+            {
+                ServicoDescontoDe5 desc5 = new ServicoDescontoDe5( orcamento );
+                desc5.calculaDescontoDe5();
+                orcamento.setDesconto(desc5.getDescontoDe5());
+
+                double tempDesc10 = 0;
+                ServicoDescontoDe10 desc10 = new ServicoDescontoDe10( orcamento );
+                tempDesc10 = desc10.calculaDescontoDe10() + orcamento.getDesconto();
+                orcamento.setDesconto( tempDesc10 );
+
+                double tempCustoFinal = orcamento.getCustoItens() + orcamento.getImposto() - orcamento.getDesconto();
+                orcamento.setCustoConsumidor( tempCustoFinal );
+            }
+               
+        }       
 
         return efetivaOrcamento.run(idOrcamento);
     }

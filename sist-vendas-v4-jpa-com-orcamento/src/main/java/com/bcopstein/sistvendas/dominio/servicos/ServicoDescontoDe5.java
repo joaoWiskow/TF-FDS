@@ -3,14 +3,14 @@ public class ServicoDescontoDe5 implements IServicoDesconto{
     Orcamento orcamento;
     List<Itens> orcDesc5;
 
-    public desconto(double valor, Orcamento orcamento)
+    public desconto(Orcamento orcamento)
     {
-        this.valor = valor;
+        valor = 0;
         this.orcamento = orcamento;
         this.orcDesc5.getItens();
     }
 
-    public double calculaDesconto()
+    public double calculaDescontoDe5()
     {
         
         for(Item i : orcDesc5)

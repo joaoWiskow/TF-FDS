@@ -12,7 +12,7 @@ public class ServicoImpostoRS implements IServicoImposto{
         orcPE = orcamento.getItens();
     }
 
-    public double calculaImpostoPE()
+    public calculaImpostoPE()
     {
         for(Item i : orcPE)
         {
