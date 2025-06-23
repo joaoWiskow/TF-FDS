@@ -131,4 +131,60 @@ public class Controller {
     public OrcamentoModel buscaOrcamento(@PathVariable(value="id") long idOrcamento){
         return buscaOrcamento.run(idOrcamento);
     }
+
+    @PostMapping("entradaEstoque")
+    public void entradaEstoque(@RequestBody ItemPedidoDTO entrada) {
+    servicoDeEstoque.entradaEstoque(
+        entrada.getProduto().getId(),
+        entrada.getQuantidade()
+    );
+    }
+
+    @PostMapping("consultaEstoque")
+    public Map<Long, Integer> consultaEstoque(@RequestBody List<Long> codigos) {
+        return servicoDeEstoque.quantidadeParaLista(codigos);
+    }
+
+    @GetMapping("orcamentosEfetivados")
+    public List<OrcamentoDTO> orcamentosEfetivados(
+    @RequestParam("inicio") String inicio,
+    @RequestParam("fim") String fim
+    ){
+    LocalDate dataIni = LocalDate.parse(inicio);
+    LocalDate dataFim = LocalDate.parse(fim);
+    return buscaOrcamento.orcamentosNoPeriodo(dataIni, dataFim);
+}
+
+//Relatorio relacionando efetivados aos disponiveis ,custo cons e total vend
+@GetMapping("relatorio")
+@CrossOrigin(origins = "*")
+public String relatorioGeral() {
+    StringBuilder relatorio = new StringBuilder();
+    List<ProdutoDTO> produtos = produtosDisponiveis.run();
+    relatorio.append("Produtos disponíveis: ").append(produtos.size()).append("\n");
+
+    LocalDate hoje = LocalDate.now();
+    LocalDate inicio = hoje.minusDays(30);
+    List<OrcamentoDTO> orcamentos = buscaOrcamento.orcamentosNoPeriodo(inicio, hoje);
+
+    int efetivados = 0;
+    int totalItensVendidos = 0;
+    double valorTotalEfetivados = 0.0;
+
+    for (OrcamentoDTO o : orcamentos) {
+        if (o.isEfetivado()) {
+            efetivados++;
+            valorTotalEfetivados += o.getCustoConsumidor();
+            for (ItemPedidoDTO item : o.getItens()) {
+                totalItensVendidos += item.getQuantidade();
+            }
+        }
+    }
+    relatorio.append("Orçamentos efetivados nos últimos 30 dias: ").append(efetivados).append("\n");
+    relatorio.append("Total de itens vendidos em 30 dias: ").append(totalItensVendidos).append("\n");
+    relatorio.append("Valor total dos orçamentos efetivados em 30 dias: R$ ")
+             .append(String.format("%.2f", valorTotalEfetivados)).append("\n");
+
+    return relatorio.toString();
+}
 }
