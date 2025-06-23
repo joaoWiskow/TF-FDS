@@ -11,8 +11,12 @@ import com.bcopstein.sistvendas.dominio.servicos.ServicoDeVendas;
 public class BuscaOrcamentoUC {
         
     private ServicoDeVendas servicoDeVendas;
-        
-    @Autowired
+     private IOrcamentoRepositorio repositorio;
+ @Autowired
+    public List<OrcamentoDTO> orcamentosNoPeriodo(LocalDate inicio, LocalDate fim) {
+        return repositorio.todos().stream()  ;
+    } 
+   
     public BuscaOrcamentoUC(ServicoDeVendas servicoDeVendas){
             this.servicoDeVendas = servicoDeVendas;
         }

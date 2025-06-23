@@ -24,10 +24,12 @@ import com.bcopstein.sistvendas.dominio.servicos.ServicoDescontoDe5;
 
 @RestController
 public class Controller {
-    private ProdutosDisponiveisUC produtosDisponiveis;
-    private CriaOrcamentoUC criaOrcamento;
-    private EfetivaOrcamentoUC efetivaOrcamento;
-    private BuscaOrcamentoUC buscaOrcamento;
+    @Autowired private ProdutosDisponiveisUC produtosDisponiveis;
+    @Autowired private CriaOrcamentoUC criaOrcamento;
+    @Autowired private EfetivaOrcamentoUC efetivaOrcamento;
+    @Autowired private BuscaOrcamentoUC buscaOrcamento;
+    @Autowired private CatalogoProdutosUC catalogoProdutos;
+    @Autowired private ServicoDeEstoque servicoDeEstoque;
 
     @Autowired
     public Controller(ProdutosDisponiveisUC produtosDisponiveis,

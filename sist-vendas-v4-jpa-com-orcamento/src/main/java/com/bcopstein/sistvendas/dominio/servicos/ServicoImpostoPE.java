@@ -1,11 +1,11 @@
 import com.bcopstein.sistvendas.persistencia.Orcamento;
 
-public class ServicoImpostoRS implements IServicoImposto{
+public class ServicoImpostoPE implements IServicoImposto{
     double valor;
     Orcamento orcamento;
     List<Itens> orcPE;
 
-    public ServicoImpostoRS(double valor, Orcamento orcamento)
+    public ServicoImpostoPE(double valor, Orcamento orcamento)
     {
         this.valor = valor;
         this.orcamento = orcamento;

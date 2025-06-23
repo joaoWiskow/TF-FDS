@@ -39,4 +39,20 @@ public class ServicoDeEstoque{
          System.out.println("--qtEstoque: "+id);
         estoque.baixaEstoque(id,qtdade);
     }  
+
+    public void entradaEstoque(long codProduto, int quantidade) {
+        var item = estoque.findByProdId(codProduto);
+        if (item == null) throw new IllegalArgumentException("Produto inexistente");
+        item.setQuantidade(item.getQuantidade() + quantidade);
+        estoque.save(item);
+    }
+
+    public Map<Long, Integer> quantidadeParaLista(List<Long> codigos) {
+        Map<Long, Integer> mapa = new HashMap<>();
+        for (long cod : codigos) {
+            mapa.put(cod, estoque.quantidadeEmEstoque(cod));
+        }
+        return mapa;
+    }
+
 }
