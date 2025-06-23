@@ -5,9 +5,9 @@ public class ServicoDescontoDe10 implements IServicoDesconto{
     Orcamento orcamento;
     List<Itens> orcDesc10;
 
-    public desconto(double valor, Orcamento orcamento)
+    public desconto(Orcamento orcamento)
     {
-        this.valor = valor;
+        valor = 0;
         this.orcamento = orcamento;
         this.orcDesc10.getItens();
     }
